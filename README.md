@@ -1,96 +1,82 @@
-# Домашнее задание №2
+# Homework #2
 
-## Содержание
-1. [Содержание](#содержание)
-1. [Задание](#задание)
-1. [Требования к корректности решения](#требования-к-корректности-решения)
-    1. [Базовые требования](#базовые-требования)
-    1. [Ограничения на ввод и вывод](#ограничения-на-ввод-и-вывод)
-    1. [Требования к реализации](#требования-к-реализации)
-    1. [Консольное приложение](#консольное-приложение)
-    1. [Разделение обязанностей](#разделение-обязанностей)
-    1. [Структура репозитория](#структура-репозитория)
-1. [Сроки сдачи](#сроки-сдачи)
-1. [Система оценки](#система-оценки)
+## Task
 
+Write a program `hw-02_huffman` that performs compression and decompression using a two-pass Huffman algorithm.
+Also implement tests of the written algorithm.
 
-## Задание
+## Requirements for the correctness of the solution
 
-Напишите программу `hw-02_huffman`, выполняющую сжатие и разжатие двухпроходным алгоритмом Хаффмана.
-Также реализуйте тесты написанного алгоритма.
+### Basic requirements
+Standard and additional requirements apply in this assignment:
 
-## Требования к корректности решения
+* The program is obliged to check the correctness of the arguments (see
+[console application](#console-application)).
+* It is enough to check relatively trivial errors: going beyond the boundaries of the image and lack of
+arguments.
+* If one of the arguments turns out to be a non-number instead of a number, the behavior of the program is undefined
+(that is, you do not need to process it).
+* If there are problems with arguments, file opening, memory allocation, etc., the program must
+shut down the job correctly and return a non-zero return code.
 
-### Базовые требования
-В этом задании действуют стандартные и дополнительные требования:
+### Input and output restrictions
 
-* Программа обязана проверить корректность аргументов (смотри
-  [консольное приложение](#консольное-приложение)).
-  * Достаточно проверить относительно тривиальные ошибки: выход за границы изображения и нехватку
-    аргументов.
-  * Если один из аргументов оказывается не-числом вместо числа, поведение программы не определено
-    (то есть вам не требуется это обрабатывать).
-* При проблемах с аргументами, открытием файла, выделением памяти и прочим, программа должна
-  корректно завершить работу и вернуть ненулевой код возврата.
+Although the program should not rely on this, when checking the input files are limited to 5MiB. Many
+describe the Huffman algorithm for text compression, but the input file can contain any bytes. Y
+the program has a time limit of 5 seconds, but in fact it should work noticeably
+faster.
 
-### Ограничения на ввод и вывод
+### Implementation Requirements
 
-Хотя программа не должна опираться на это, при проверке входные файлы ограничены в 5MiB. Многие
-описывают алогритм Хаффмана для сжатия текста, но входной файл может содержать любые байты. У
-программы есть ограничение времени работы в 5 секунд, но на деле она должна работать заметно
-быстрее.
-
-### Требования к реализации
-
-* Реализация должна быть выполнена в объектно-ориентированном стиле (например, включать классы 
-  `HuffmanTreeNode`, `HuffmanTree`, `HuffmanArchiver`, но данные имена лишь пример).
-* Для хранения элементов, там, где это уместно, должна быть использована библиотека STL (например,
-  `std::vector`, а не динамический массив).
-* Ввод-вывод должен быть выполнен с помощью классов STL (`iostream`).
-* Должны использоваться исключения.
-* Должен быть реализован свой класс для автоматического тестирования или использована одна из
-  библиотек (`google test`, `doctest`, …).
-* Для методов должны быть написаны автотесты.
+* The implementation should be done in an object-oriented style (for example, include classes
+`HuffmanTreeNode', `HuffmanTree', `HuffmanArchiver', but these names are just an example).
+* For storing elements, where appropriate, the STL library should be used (for example,
+`std::vector`, not a dynamic array).
+* I/O must be performed using STL (`iostream`) classes.
+* Exceptions should be used.
+* A class for automatic testing must be implemented or one of
+the libraries (`google test`, `doctest`, ...) must be used.
+* Autotests must be written for methods.
 
 
-*Подсказки*:
-* Рекомендуем удостовериться, что сжатый, а затем разжатый Вами файл абсолютно эквивалентен
-  исходному, не проверяйте на глаз (`diff` и аналоги).
-* Рекомендуем протестировать на больших файлах, файлах разного типа (текстовые, бинарные) и на
-  пустом файле.
-* Рекомендуем проверить свою программу на синтетических тестах, заведомо плохо кодируемых алгоритмом
-  Хаффмана.
-* Рекомендуем проверить свою программу на утечки памяти.
+*Hints*:
+* We recommend making sure that the compressed and then decompressed file is absolutely equivalent
+to the original one, do not check by eye (`diff` and analogues).
+* We recommend testing on large files, files of different types (text, binary) and on
+an empty file.
+* We recommend testing your program on synthetic tests that are obviously poorly encoded by the algorithm
+Huffman.
+* We recommend checking your program for memory leaks.
 
-### Консольное приложение
+### Console application
 
-Программа запускается с флагами:
-```
+The program starts with flags:
+``
 ./hw-02_huffman [flags]
-```
-где флаги:
-* `-c`: сжатие,
-* `-u`: разжатие,
-* `-f <path>`, `--file <path>`: имя входного файла,
-* `-o <path>`, `--output <путь>`: имя результирующего файла.
-Флаги могут указываться в любом порядке.
+``
+where flags are:
+* `-c`: compression,
+* `-u': decompression,
+* `-f <path>`, `--file <path>`: input file name,
+* `-o <path>`, `--output <path>`: name of the resulting file.
+The flags can be specified in any order.
 
-Программа должна выводить на экран статистику сжатия/распаковки: размер исходных данных, размер
-полученных данных и размер, который был использован для хранения вспомогательных данных в выходном
-файле (например, таблицы). Не должно выводиться никакого дополнительного текста, только размеры.
-Все размеры в байтах.
+The program should display compression/decompression statistics: the size of the source data, the size
+of the received data and the size that was used to store auxiliary data in the output
+file (for example, tables). No additional text should be output, only dimensions.
+All sizes are in bytes.
 
-Например:
-```
+For example:
+``
 $ ./huffman -c -f myfile.txt -o result.bin
 15678
 6172
 482
 ```
 
-Размер исходного файла (исходные данные): 15678 байт, размер сжатых данных (без дополнительной
-информации): 6172 байта, размер дополнительных данных: 482 байта. Размер всего сжатого файла: 6172 +
-482 = 6654 байта.
+The size of the source file (source data): 15678 bytes, the size of the compressed data (without additional
+information): 6172 bytes, the size of additional data: 482 bytes. Total compressed file size: 6172+
+482 = 6654 bytes.
 
 ```
 $ ./huffman -u -f result.bin -o myfile_new.txt
@@ -99,49 +85,27 @@ $ ./huffman -u -f result.bin -o myfile_new.txt
 482
 ```
 
-Размер распакованного файла (полученные данные): 15678 байт, размер сжатых данных (без 
-дополнительной информации): 6172 байта, размер дополнительных данных: 482 байта. Размер всего
-исходного сжатого файла: 6172 + 482 = 6654 байта.
+The size of the decompressed file (received data): 15678 bytes, the size of the compressed data (without
+additional information): 6172 bytes, additional data size: 482 bytes. The size of the entire
+source compressed file: 6172 + 482 = 6654 bytes.
 
-### Разделение обязанностей
-* Работу с аргументами и точку входа реализовать в `main.c`.
-* Классы реализации алгоритма поместить в `src/` и `include/`.
-* Файлы с тестами поместить в `test/`. Точкой входа должен быть `test.cpp`.
+### Separation of responsibilities
+* Work with arguments and the entry point to implement in `main.c'.
+* Put the algorithm implementation classes in `src/` and `include/`.
+* Put the test files in `test/`. The entry point should be `test.cpp `.
 
-### Структура репозитория
-Если вам нужны дополнительные файлы (например, тестовые файлы), кладите их в папку `samples`.
+## Delivery dates
+The task was issued on 11.04.2022.
+The task is given ** exactly three ** attempts to pass. Check the terms of attempts with the teacher.
 
-```
-<корень-личного-репозитория>
-|--hw-02_huffman
-   |--include
-   |  |-- ...
-   |--samples
-   |  |-- ...
-   |--src
-   |  |-- main.cpp
-   |  |-- ...
-   |--test
-   |  |-- test.cpp
-   |  |-- huffman_test.cpp (?)
-   |  |-- huffman_test.hpp (?)
-   |--Makefile / CMakeLists.txt
-```
+Note that, unlike in the laboratory:
 
-Папку `obj`, объектные и исполняемые файлы класть в репозиторий не разрешается.
+* This homework is more in complexity and volume of code. Please do not delay even until
+the interim deadline for delivery.
+* You can make ** no more than three** full attempts for the entire time of delivery. At your discretion
+intermediate attempts may be added to the teacher, which will be partially checked.
+* Due to the volume of the code, solutions can be checked with a significant delay, especially if there is
+stylistic remarks.
 
-## Сроки сдачи
-Задание выдано 11.04.2022.
-На задание даётся **ровно три** попытки сдачи. Сроки попыток уточняйте у преподавателя.
-
-Учтите, что в отличие от лабораторных:
-
-* Это домашнее задание больше по сложности и объёму кода. Пожалуйста, не откладывайте даже до
-  промежуточного срока сдачи.
-* Вы можете сделать **не больше трёх** полноценных попыток за всё время сдачи. На усмотрение
-  преподавателя могут добавляться промежуточные попытки, которые будут проверяться частично.
-* Из-за объёма кода решения могут проверяться с существенной задержкой, особенно при наличии
-  стилистических замечаний.
-
-## Система оценки
-* Задание оценивается в 30 баллов: 15 за корректность, 5 за тесты, 10 за стиль.
+## Evaluation system
+* The task is estimated at 30 points: 15 for correctness, 5 for tests, 10 for style.
